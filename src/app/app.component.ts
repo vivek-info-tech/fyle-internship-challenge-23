@@ -27,17 +27,25 @@ export class AppComponent implements OnInit{
   this.loader=true;
   this.apiService.getUser(this.userName).subscribe( (data) =>  {
               
-    this.userData=data;
     
-    this.loader=false;
-     
+    if (data === null) {
+      // Object is not null
+      this.loader=false;
+      this.userData=data;
+      
+  } else {
+      // Object is null
+      this.userNotFound=true;
+  }
+    
+   
    
 },
-(error)=>{
+// (error)=>{
  
-  this.loader=false;
-  this.userNotFound=true;
-}
+//   this.loader=false;
+//   this.userNotFound=true;
+// }
 );
  
   this.userRepo();
@@ -49,10 +57,10 @@ userRepo():void{
     this.loader=false;
    
   },
-  (error)=>{
-     this.loader=false;
-     this.userNotFound=true;
-  }
+  // (error)=>{
+  //    this.loader=false;
+  //    this.userNotFound=true;
+  // }
   )
    
 }
