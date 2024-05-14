@@ -28,7 +28,7 @@ export class AppComponent implements OnInit{
   this.apiService.getUser(this.userName).subscribe( (data) =>  {
               
     
-    if (data === null) {
+    if (data !== null) {
       // Object is not null
       this.loader=false;
       this.userData=data;
