@@ -28,13 +28,15 @@ export class AppComponent implements OnInit{
   this.apiService.getUser(this.userName).subscribe( (data) =>  {
               
     this.userData=data;
-    if(this.userData==null)
-      {
-        this.userNotFound=true;
-      }
+    
     this.loader=false;
      
    
+},
+(error)=>{
+ 
+  this.loader=false;
+  this.userNotFound=true;
 }
 );
  
@@ -46,7 +48,13 @@ userRepo():void{
     this.userRepos=repos;
     this.loader=false;
    
-  })
+  },
+  (error)=>{
+     this.loader=false;
+     this.userNotFound=true;
+  }
+  )
+   
 }
 onPageChange(event:any){
 this.currentPage=event;
