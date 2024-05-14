@@ -41,3 +41,23 @@ Run `ng serve` for a dev server. Navigate to http://localhost:4200/. The app wil
 
 Visit the [Angular Documentation](https://angular.io/guide/styleguide) to learn more.
 Styling is to be strictly done with [Tailwind](https://tailwindcss.com/docs/installation).
+
+## Running Unit Tests
+
+To run unit tests for the component and service, follow these steps:
+
+### Prerequisites
+- Node.js and npm must be installed on your machine.
+
+### Setup
+1. Clone the repository to your local machine.
+2. Navigate to the project directory in the terminal.
+
+### Running Tests
+1. For running tests of the component:
+   ```bash or terminals
+   ng test --include='**/*.spec.ts'
+
+  For running tests of the service:
+  ng test --include='**/*.service.spec.ts'
+

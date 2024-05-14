@@ -1,8 +1,8 @@
 <div class=" h-screen  ">
       <div class="h-16  flex justify-center items-center bg-black">
             <form method="get" >
-                  <div class="h-12 w-[400px] bg-gray-200 flex  items-center text-black border rounded-3xl text-center">
-                        <input class="h-12 w-[300px] border rounded-l-3xl text-center " type="text"
+                  <div class="h-12 w-[500px] bg-gray-200 flex  items-center text-black border rounded-3xl  ">
+                        <input class="h-12 w-[400px] border rounded-l-3xl pl-6 " type="text"
                               placeholder="Search by Github user Name" [(ngModel)]="userName" name="user"><button
                               class="h-12 p-2 font-bold text-xl text-center hover:bg-black hover:text-white border rounded-r-3xl w-[100px]"
                               type="search"  (click)="getUsers()" value="search">Search</button>
@@ -10,11 +10,12 @@
 
             </form>
       </div>
-      <!-- <ngx-skeleton-loader count="10" *ngIf="loader"></ngx-skeleton-loader> -->
-      <div *ngIf="userNotFound">
+      
+      <div *ngIf="userNotFound" class="flex h-screen justify-center items-center font-sans font-bold text-3xl">
             <h1>User Not found</h1>
       </div>
       <div *ngIf=userData>
+            <ngx-skeleton-loader count="30" *ngIf="loader" appearance="line"></ngx-skeleton-loader>
             <div class="h-[200px]">
                   <div class="flex justify-normal h-[180px] items-center">
                         <div class=" ml-8 w-[20%] rounded-full flex justify-center items-center "><img

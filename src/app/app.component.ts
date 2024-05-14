@@ -16,7 +16,7 @@ export class AppComponent implements OnInit{
   currentPage:number = 1;
   totalPages:number = 0;
   userNotFound:boolean=false;
-  loader:boolean=true;
+  loader:boolean=false;
   constructor(
     private apiService: ApiService
   ) {}
@@ -24,11 +24,16 @@ export class AppComponent implements OnInit{
   
  public getUsers(){
   // this.setUserName=userName;
+  this.loader=true;
   this.apiService.getUser(this.userName).subscribe( (data) =>  {
               
     this.userData=data;
+    if(this.userData==null)
+      {
+        this.userNotFound=true;
+      }
     this.loader=false;
-    this.userNotFound=this.userData.length===0;
+     
    
 }
 );
@@ -36,8 +41,10 @@ export class AppComponent implements OnInit{
   this.userRepo();
  }
 userRepo():void{
+  this.loader=true;
   this.apiService.getRepos( this.userName).subscribe((repos)=>{
     this.userRepos=repos;
+    this.loader=false;
    
   })
 }
@@ -51,16 +58,7 @@ onPageSizeChange(event:any){
   this.userRepo();
 }
 
-//  currentPage = 0;
-//  itemsPerPage = 10;
-
-//  get startIndex(): number {
-//    return this.currentPage * this.itemsPerPage;
-//  }
-
-//  get endIndex(): number {
-//    return (this.currentPage + 1) * this.itemsPerPage;
-//  }
+ 
 
  nextPage() {
   this.currentPage++;
@@ -69,23 +67,13 @@ onPageSizeChange(event:any){
 prevPage() {
   this.currentPage--;
 }
-// onPageChange(page: number): void {
-//   this.currentPage = page;
-//   this. getUsers();
-// }
+ 
 
   ngOnInit(){
-  //   this.apiService.getUser(this.setUserName).subscribe( (data) =>  {
-              
-  //     this.userData=data;
-     
-  // });
+  
   this.getUsers();
     
-  // this.apiService.getRepos( this.setUserName).subscribe((repos)=>{
-  //   this.userRepos=repos;
-  //   console.log(  this.userRepos);
-  // })
+   
     
   }
 }

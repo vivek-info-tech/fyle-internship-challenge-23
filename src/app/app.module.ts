@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -9,19 +10,19 @@ import { HttpClientModule } from  '@angular/common/http';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
+
 @NgModule({
   declarations: [
     AppComponent
     
   ],
-  imports: [
-  
-    //NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' }),
-    NgxPaginationModule,
+  imports:[
+    //NgxSkeletonLoaderModule,
     BrowserModule,
-    FormsModule,
+   FormsModule,
     HttpClientModule,
-    //NgxSkeletonLoaderModule
+     NgxPaginationModule,
+    NgxSkeletonLoaderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
