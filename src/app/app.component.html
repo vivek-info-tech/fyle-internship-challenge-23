@@ -1,121 +1,105 @@
 <div class=" h-screen  ">
-   <div class="h-16  flex justify-center items-center bg-black">
-         <div class="h-12 w-[400px] bg-gray-200 flex  items-center text-black border rounded-3xl text-center"><input class="h-12 w-[300px] border rounded-l-3xl text-center " type="text" placeholder="Enter User Name"><button class="h-12 p-2 font-bold text-xl text-center hover:bg-black hover:text-white border rounded-r-3xl w-[100px]">Search</button></div>
-         
-   </div>
-   <div class="h-[200px]">
-      <div class="flex justify-normal h-[180px] items-center">
-            <div class=" ml-8 w-[20%] rounded-full flex justify-center items-center "><img class=" h-32 w-32 border-solid rounded-full" src="assets/images/vivek.jpeg" alt=""></div>
-            <div class="w-[70%] gap-2 ">
-                  <h1 class="font-bold font-sans text-2xl">Vivek Kumar</h1>
-                  <p class="font-serif font-medium text-base">BIo I am student </p>
-                  <div class="flex justify-normal gap-2 items-center"> <img class="h-4 w-4" src="assets/images/location.jpeg" alt=""><h1 class="text-xl font-semibold font-mono">india</h1></div>
-                  <a href="http://"> <p class="font-medium text-base">twiter link</p></a>
+      <div class="h-16  flex justify-center items-center bg-black">
+            <form method="get" >
+                  <div class="h-12 w-[400px] bg-gray-200 flex  items-center text-black border rounded-3xl text-center">
+                        <input class="h-12 w-[300px] border rounded-l-3xl text-center " type="text"
+                              placeholder="Search by Github user Name" [(ngModel)]="userName" name="user"><button
+                              class="h-12 p-2 font-bold text-xl text-center hover:bg-black hover:text-white border rounded-r-3xl w-[100px]"
+                              type="search"  (click)="getUsers()" value="search">Search</button>
+                  </div>
+
+            </form>
+      </div>
+      <!-- <ngx-skeleton-loader count="10" *ngIf="loader"></ngx-skeleton-loader> -->
+      <div *ngIf="userNotFound">
+            <h1>User Not found</h1>
+      </div>
+      <div *ngIf=userData>
+            <div class="h-[200px]">
+                  <div class="flex justify-normal h-[180px] items-center">
+                        <div class=" ml-8 w-[20%] rounded-full flex justify-center items-center "><img
+                                    class=" h-32 w-32 border-solid rounded-full" src={{userData.avatar_url}} alt="">
+                        </div>
+                        <div class="w-[70%] gap-2 ">
+                              <h1 class="font-bold font-sans text-2xl">{{userData.name}} </h1>
+                              <p class="font-serif font-medium text-base"> {{userData.bio}}</p>
+                              <div class="flex justify-normal gap-2 items-center"> <img class="h-4 w-4"
+                                          src="assets/images/location.jpeg" alt="">
+                                    <h1 class="text-xl font-semibold font-mono">{{userData.location}}</h1>
+                              </div>
+                              <a href=" https://twitter.com/{{userData.twitter_username}}">
+                                    <p class="font-medium text-base">
+                                          Twitter:https://twitter.com/{{userData.twitter_username
+                                          }}</p>
+                              </a>
+                        </div>
+                  </div>
+                  <div><a href={{userData.html_url}} class="flex font-medium items-center gap-3 mx-20 "> <img
+                                    class="h-4 w-4 font-bold" src="assets/images/link.png" alt="">
+                              <p class="font-sans font-medium text-base">{{userData.html_url}}</p>
+                        </a></div>
+            </div>
+            <div>
+                  <div class="flex justify-center items-center my-4">
+                        <label for="pageSize">Page Size:</label>
+                        <select id="pageSize" [(ngModel)]="pageSize" (change)="onPageSizeChange($event)">
+                              <option *ngFor="let option of pageSizeOptions">{{ option }}</option>
+                        </select>
+                  </div>
+                  <div class=" flex flex-wrap  mx-6 my-5  ">
+                        <div *ngFor="let item of userRepos | paginate:{
+                        itemsPerPage:pageSize,
+                        currentPage:currentPage,
+                        totalItems:totalPages
+                        } "
+                              class=" w-[500px] my-5 h-[150px] mx-auto p-3 shadow-slate-500 border-black border-solid border-x-2 border-y-2 ">
+                              <h1 class="text-2xl text-blue-400 font-bold ">{{item.name}}</h1>
+                              <p class="text-lg my-2  font-sans">{{item.description}}</p>
+                              <div class="flex gap-3 ">
+                                    <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">
+                                          {{item.language}}</h1>
+
+
+                              </div>
+                        </div>
+
+
+
+
+
+                  </div>
+                  <div class="flex justify-center items-center pb-10 my-8">
+
+                        <div class="w-[65%]">
+                              <div class="flex justify-center mb-2">
+                                    <pagination-controls previousLabel="" nextLabel=""
+                                          (pageChange)="onPageChange($event)">
+
+                                    </pagination-controls>
+                                    <!-- <button
+                                    class="flex p-2 text-lg font-semibold w-12 h-12  border-solid border-gray-400 border-x-2 border-y-2  justify-center items-center  hover:bg-blue-400 hover:text-white hover:border-blue-400">
+                                    <img class="h-5 w-5 font-bold" src="assets/images/dleft.png" alt=""></button>
+                              
+                                    <button   class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white hover:border-blue-400" *ngFor="let page totalPages" (click)="onPageChange(page)">{{page}}</button>
+                               
+                                        
+                                    <button  class="flex p-2 text-lg font-semibold w-12 h-12  border-solid border-gray-400 border-x-2 border-y-2  justify-center items-center  hover:bg-blue-400 hover:text-white hover:border-blue-400"><img
+                                          class="h-5 w-5 font-bold " src="assets/images/dright.png" alt=""></button> -->
+                              </div>
+                              <div class="flex justify-between">
+
+                                    <button
+                                          class="flex p-2 text-lg font-semibold w-40 rounded-3xl border-solid border-black border-x-2 border-y-2 gap-1 justify-center items-center hover:text-blue-500"
+                                          (click)="prevPage()"> <img class="h-5 w-7 font-bold"
+                                                src="assets/images/left.png" alt=""> Older</button>
+                                    <button
+                                          class="flex p-2 text-lg font-semibold w-40 rounded-3xl border-solid border-black border-x-2 border-y-2 gap-1 justify-center items-center hover:text-blue-500"
+                                          (click)="nextPage()">Newer <img class="h-5 w-7 font-bold"
+                                                src="assets/images/right.png" alt=""> </button>
+
+                              </div>
+                        </div>
+                  </div>
             </div>
       </div>
-      <div ><a href="" class="flex font-medium items-center gap-3 mx-20 "> <img class="h-4 w-4 font-bold" src="assets/images/link.png" alt=""><p class="font-sans font-medium text-base">github link</p></a></div>
-   </div>
-   <div class=" flex flex-wrap  mx-6 my-5">
-      <div class=" w-[500px] h-[150px] mx-auto p-3 shadow-slate-500 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2  p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2   p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2  p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2 p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2  p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2  p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      <div class=" w-[500px] h-[150px] mx-auto my-2  p-3 border-black border-solid border-x-2 border-y-2 ">
-            <h1 class="text-2xl text-blue-400 font-bold ">REpo file 1</h1>
-            <p class="text-lg my-2 font-serif font-sans">dicripesion</p>
-            <div class="flex gap-3 ">
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">javaScript</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">Angular</h1>
-                  <h1 class="bg-blue-400 font-bold font-sans text-lg p-1 text-white rounded-lg">HTML</h1>
-                  
-            </div>
-      </div>
-      
-       
-   </div>
-   <div class="flex justify-center items-center pb-10 my-8">
-     
-     <div class="w-[65%]">
-      <div class="flex justify-center mb-2"> 
-            <button class="flex p-2 text-lg font-semibold w-12 h-12  border-solid border-gray-400 border-x-2 border-y-2  justify-center items-center  hover:bg-blue-400 hover:text-white hover:border-blue-400"><img class="h-5 w-5 font-bold" src="assets/images/dleft.png" alt=""></button>
-            <button class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white hover:border-blue-400">1</button>
-            <button class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white hover:border-blue-400">2</button>
-            <button class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white hover:border-blue-400">3</button>
-            <button class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white hover:border-blue-400">4</button>
-            <button class="flex p-2   font-semibold w-12 h-12   border-solid font-sans  border-gray-400 border-x-2 border-y-2   justify-center items-center text-xl text-blue-500 hover:bg-blue-400 hover:text-white  hover:border-blue-400">5</button>
-            <button class="flex p-2 text-lg font-semibold w-12 h-12  border-solid border-gray-400 border-x-2 border-y-2  justify-center items-center  hover:bg-blue-400 hover:text-white hover:border-blue-400"><img class="h-5 w-5 font-bold " src="assets/images/dright.png" alt=""></button>
-      </div>
-      <div class="flex justify-between">
-            <button class="flex p-2 text-lg font-semibold w-40 rounded-3xl border-solid border-black border-x-2 border-y-2 gap-1 justify-center items-center hover:text-blue-500"> <img  class="h-5 w-7 font-bold" src="assets/images/left.png" alt=""> Older</button>
-            <button class="flex p-2 text-lg font-semibold w-40 rounded-3xl border-solid border-black border-x-2 border-y-2 gap-1 justify-center items-center hover:text-blue-500">Newer <img  class="h-5 w-7 font-bold" src="assets/images/right.png" alt="">  </button>
-             
-      </div>
-     </div>
-   </div>
 </div>
